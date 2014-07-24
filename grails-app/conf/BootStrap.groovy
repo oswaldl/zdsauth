@@ -52,7 +52,7 @@ class BootStrap {
 
         Application application=new Application(applicationId:"StoreVisit",isSupportAnonymous:false);
         application.save(failOnError: true)
-        Connection connection=new Connection(connName:"StoreVisit",serviceUrl:"http://zhongyitech.chinacloudapp.cn/zdsspd/api/task",username:"",password:"",isSupportAnonymous:false,application:application)
+        Connection connection=new Connection(connName:"StoreVisit",serviceUrl:"http://zhongyitech.chinacloudapp.cn/zdsspd/api/store/",username:"",password:"",isSupportAnonymous:false,application:application)
         connection.save(failOnError: true)
         ApplicationUser applicationUser=new ApplicationUser(user:user3,application:application)
         applicationUser.save(failOnError: true)

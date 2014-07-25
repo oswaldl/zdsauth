@@ -4,7 +4,6 @@ import com.zy.zds.auth.Application
 import com.zy.zds.auth.ApplicationUser
 import com.zy.zds.auth.Connection
 import com.zy.zds.auth.User
-import org.apache.http.HttpEntity
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpDelete
@@ -24,8 +23,6 @@ import javax.ws.rs.POST
 import javax.ws.rs.PUT
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
-import javax.ws.rs.Produces
-import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Response
 
 import static org.grails.jaxrs.response.Responses.*
@@ -71,6 +68,9 @@ class SapResource {
             headers.put(it,request.getHeader(it))
         }
         String string=doGet(connection.serviceUrl+params,headers)
+        if(string==null){
+            response.sendError(404)
+        }
         ok string
     }
 
@@ -107,7 +107,7 @@ class SapResource {
     Response postSap(
             @PathParam('appID') String appID,
             @PathParam('connID') String connID,
-            @PathParam('params') String params) {
+            @PathParam('params') String params ) {
         HttpServletRequest request=WebUtils.retrieveGrailsWebRequest().getCurrentRequest()
         HttpServletResponse response=WebUtils.retrieveGrailsWebRequest().getCurrentResponse()
         Application application=Application.findByApplicationId(appID)
@@ -122,13 +122,12 @@ class SapResource {
         request.headerNames.each {
             headers.put(it,request.getHeader(it))
         }
-        StringBuffer content = new StringBuffer();
-        String line = null;
-        BufferedReader reader = request.getReader();
-        while((line = reader.readLine()) != null) {
-            content.append(line);
+        headers.remove("content-length")
+        headers.remove("host")
+        String string=doPost(connection.serviceUrl,headers,request.JSON.toString())
+        if(string==null){
+            response.sendError(403)
         }
-        String string=doPost(connection.serviceUrl,headers,content)
         ok string
     }
 
@@ -145,7 +144,7 @@ class SapResource {
         String string=null;
         try{
             HttpResponse response = client.execute(post);
-            if(response.getStatusLine().getStatusCode() == 200){
+            if(response.getStatusLine().getStatusCode() == 201){
                 string=EntityUtils.toString(response.getEntity(),"UTF-8");
             }
         }catch(Exception e){
@@ -181,13 +180,12 @@ class SapResource {
         request.headerNames.each {
             headers.put(it,request.getHeader(it))
         }
-        StringBuffer content = new StringBuffer();
-        String line = null;
-        BufferedReader reader = request.getReader();
-        while((line = reader.readLine()) != null) {
-            content.append(line);
+        headers.remove("content-length")
+        headers.remove("host")
+        String string=doPut(connection.serviceUrl+params,headers,request.JSON.toString())
+        if(string==null){
+            response.sendError(403)
         }
-        String string=doPut(connection.serviceUrl,headers,content)
         ok string
     }
 
@@ -239,23 +237,30 @@ class SapResource {
         request.headerNames.each {
             headers.put(it,request.getHeader(it))
         }
-        String string=doPost(connection.serviceUrl+params,headers)
-        ok string
+        headers.remove("content-length")
+        headers.remove("host")
+        int code=doDelete(connection.serviceUrl+params,headers)
+        if(code==200){
+            ok "ok"
+        }else{
+           response.sendError(404)
+        }
     }
 
     //创建delete方式连接并获取返回数据
-    private String doDelete(String url,Map<String,String> headers){
+    private int doDelete(String url,Map<String,String> headers){
         HttpClient client = new DefaultHttpClient();
         HttpDelete delete = new HttpDelete(url);
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             delete.setHeader(entry.getKey(),entry.getValue())
         }
         delete.setHeader("Content-Type","application/json;charset=UTF-8")
-        String string=null;
+        int code
         try{
             HttpResponse response = client.execute(delete);
+            println(response.getStatusLine().getStatusCode())
             if(response.getStatusLine().getStatusCode() == 200){
-                string=EntityUtils.toString(response.getEntity(),"UTF-8");
+                code=response.getStatusLine().getStatusCode();
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -267,6 +272,6 @@ class SapResource {
                 e.printStackTrace();
             }
         }
-        return string;
+        return code;
     }
 }

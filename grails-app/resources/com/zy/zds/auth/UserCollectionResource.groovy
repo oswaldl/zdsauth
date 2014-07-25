@@ -60,7 +60,7 @@ class UserCollectionResource {
             WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(403)
             return
         }
-        //该用户无该app权限，返回401
+        //该用户无该app权限，返回401request/StoreVisit/StoreVisit/1
         if(!applicationUser){
             WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(401)
             return

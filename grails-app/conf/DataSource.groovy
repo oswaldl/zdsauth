@@ -2,14 +2,14 @@ dataSource {
     pooled = true
     jmxExport = true
 
-    driverClassName = "org.h2.Driver"
-    username = "sa"
-    password = ""
-
-//    driverClassName = "com.mysql.jdbc.Driver"
-//    username = "root"
+//    driverClassName = "org.h2.Driver"
+//    username = "sa"
 //    password = ""
-//    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+
+    driverClassName = "com.mysql.jdbc.Driver"
+    username = "root"
+    password = ""
+    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 //    password = "chowtaiseng1!qaz"
 
 }

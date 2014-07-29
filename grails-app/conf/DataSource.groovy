@@ -2,15 +2,15 @@ dataSource {
     pooled = true
     jmxExport = true
 
-//    driverClassName = "org.h2.Driver"
-//    username = "sa"
-//    password = ""
-
-    driverClassName = "com.mysql.jdbc.Driver"
-    username = "root"
+    driverClassName = "org.h2.Driver"
+    username = "sa"
     password = ""
-    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+
+//    driverClassName = "com.mysql.jdbc.Driver"
+//    username = "root"
 //    password = "chowtaiseng1!qaz"
+//    dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+
 
 }
 hibernate {
@@ -37,9 +37,9 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "update"
-//            url = "jdbc:mysql://192.168.60.146:3306/zdsspd_db?user=root&password=chowtaiseng1!qaz&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false"
-            url = "jdbc:mysql://localhost:3306/zdsspd_db?useUnicode=true&characterEncoding=utf8"
+            dbCreate = "create-drop"
+            url = "jdbc:mysql://192.168.60.146:3306/chowtaiseng_mobile_business?user=root&password=chowtaiseng1!qaz&useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false"
+//            url = "jdbc:mysql://localhost:3306/zdsspd_db?useUnicode=true&characterEncoding=utf8"
 
             properties {
                 // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation

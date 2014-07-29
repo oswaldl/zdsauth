@@ -67,7 +67,12 @@ class SapResource {
         request.headerNames.each {
             headers.put(it,request.getHeader(it))
         }
-        String string=doGet(connection.serviceUrl+params,headers)
+        String string
+        if(params=='all'){
+            string=doGet(connection.serviceUrl,headers)
+        }else{
+            string=doGet(connection.serviceUrl+params,headers)
+        }
         if(string==null){
             response.sendError(404)
         }
@@ -78,7 +83,6 @@ class SapResource {
     private String doGet(String url,Map<String,String> headers){
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(url);
-        println(url)
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             get.setHeader(entry.getKey(),entry.getValue())
         }
@@ -274,4 +278,6 @@ class SapResource {
         }
         return code;
     }
+
+
 }

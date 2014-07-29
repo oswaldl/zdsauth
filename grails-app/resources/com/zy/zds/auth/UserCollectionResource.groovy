@@ -39,17 +39,17 @@ class UserCollectionResource {
     }
 
     /**
-     *
+     *用户接入
      * @param appID
      * @param username
      * @param appUser
      * @return
      */
     @PUT
-    @Path('/{appID}/user')
-    Response requestUser(
+    @Path('/{appID}/{username}')
+    Response userInsert(
             @PathParam('appID') String appID,
-            @QueryParam('username') String username,
+            @PathParam('username') String username,
             ApplicationUser appUser){
         Application application=Application.findByApplicationId(appID)
         User user=User.findByUsername(username)
@@ -60,7 +60,7 @@ class UserCollectionResource {
             WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(403)
             return
         }
-        //该用户无该app权限，返回401request/StoreVisit/StoreVisit/1
+        //该用户无该app权限，返回401
         if(!applicationUser){
             WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(401)
             return
@@ -78,6 +78,19 @@ class UserCollectionResource {
         if(appUser.OSVersion){
             applicationUser.OSVersion=appUser.OSVersion
         }
+        if(appUser.userid){
+            applicationUser.userid=appUser.userid
+        }
+        if(appUser.requestid){
+            applicationUser.requestid=appUser.requestid
+        }
+        if(appUser.appid){
+            applicationUser.appid=appUser.appid
+        }
+        if(appUser.channelid){
+            applicationUser.channelid=appUser.channelid
+        }
         ok applicationUser.save(failOnError: true)
     }
+
 }

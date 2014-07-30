@@ -54,7 +54,7 @@ class BootStrap {
         application.save(failOnError: true)
         Connection connection=new Connection(connName:"StoreVisit",serviceUrl:"http://192.168.60.146:8080/zdsspd/api/store/",username:"",password:"",isSupportAnonymous:false,application:application)
         connection.save(failOnError: true)
-        ApplicationUser applicationUser=new ApplicationUser(user:user3,application:application)
+        ApplicationUser applicationUser=new ApplicationUser(user:user3,application:application,channelid:"11111111111",userid:"11111111111111")
         applicationUser.save(failOnError: true)
     }
     def destroy = {

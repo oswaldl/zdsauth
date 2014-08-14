@@ -27,7 +27,7 @@
         <div class="c_left">
             <ul>
                 <g:each in="${com.zy.zds.auth.Application.list()}" var="line">
-                    <li><a ${applicationId==line.id?'class="current"':'' } href="list?applicationId=${line?.id}" >${line?.name }</a></li>
+                    <li><a ${applicationId==line.id?'class=current':'' } href="index?applicationId=${line?.id}" >${line?.applicationId }${applicationId==line.id }</a></li>
                 </g:each>
             </ul>
         </div>
@@ -45,7 +45,7 @@
                 </g:each>
             </table>
             <div class="pagination">
-                <g:paginate params='[applicationId:"${applicationId }"]' total="${applicationUserInstanceTotal}" />
+                <g:paginate params='[applicationId:"${applicationId }"]' total="${applicationUserInstanceCount}" />
             </div>
         </div>
     </div>

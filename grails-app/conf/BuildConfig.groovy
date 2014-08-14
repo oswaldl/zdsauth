@@ -74,6 +74,8 @@ grails.project.dependency.resolution = {
             excludes: 'spring-security-core'
         }
         compile ":jaxrs:0.10"
+        compile ":pdf:0.6"
+//        compile ":quartz:1.0.2"
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0.1"
         //runtime ":cached-resources:1.1"

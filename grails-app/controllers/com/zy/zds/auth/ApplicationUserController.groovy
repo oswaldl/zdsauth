@@ -9,9 +9,19 @@ class ApplicationUserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+//    def index(Integer max) {
+//        params.max = Math.min(max ?: 10, 100)
+//        respond ApplicationUser.list(params), model: [applicationUserInstanceCount: ApplicationUser.count()]
+//    }
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond ApplicationUser.list(params), model: [applicationUserInstanceCount: ApplicationUser.count()]
+        def application=Application.get(params.applicationId)
+        if(!application){
+            application=Application.findAll().get(0)
+        }
+        def applicationUserInstanceList=ApplicationUser.findAllByApplication(application)
+        [applicationUserInstanceList:applicationUserInstanceList,applicationUserInstanceCount: ApplicationUser.countByApplication(application,params),applicationId:application.id]
     }
 
     def show(ApplicationUser applicationUserInstance) {

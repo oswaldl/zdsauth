@@ -33,9 +33,9 @@ class SapResource {
 
     //验证用户
     def checkUser(Application application,ApplicationUser applicationUser,Connection connection,HttpServletResponse response){
-        //该用户无该app权限，返回401
+        //该用户无该app权限，返回403
         if(!applicationUser){
-            response.sendError(401)
+            response.sendError(403)
             return
         }
         //验证connection与application是否对应
@@ -86,7 +86,6 @@ class SapResource {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             get.setHeader(entry.getKey(),entry.getValue())
         }
-        get.setHeader("Content-Type","application/json;charset=UTF-8")
         String string=null;
         try{
             HttpResponse response = client.execute(get);
@@ -139,16 +138,15 @@ class SapResource {
     private String doPost(String url,Map<String,String> headers,String content){
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(url);
-        println(url)
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             post.setHeader(entry.getKey(),entry.getValue())
         }
         post.setHeader("Content-Type","application/json;charset=UTF-8")
-        post.setEntity(new StringEntity(content))
+        post.setEntity(new StringEntity(content,"UTF-8"))
         String string=null;
         try{
             HttpResponse response = client.execute(post);
-            if(response.getStatusLine().getStatusCode() == 201){
+            if(response.getStatusLine().getStatusCode() == 201||response.getStatusLine().getStatusCode() == 200){
                 string=EntityUtils.toString(response.getEntity(),"UTF-8");
             }
         }catch(Exception e){
@@ -201,7 +199,7 @@ class SapResource {
             put.setHeader(entry.getKey(),entry.getValue())
         }
         put.setHeader("Content-Type","application/json;charset=UTF-8")
-        put.setEntity(new StringEntity(content))
+        put.setEntity(new StringEntity(content,"UTF-8"))
         String string=null;
         try{
             HttpResponse response = client.execute(put);

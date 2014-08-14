@@ -60,9 +60,9 @@ class UserCollectionResource {
             WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(403)
             return
         }
-        //该用户无该app权限，返回401
+        //该用户无该app权限，返回404
         if(!applicationUser){
-            WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(401)
+            WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(404)
             return
         }
         //更新用户APP相关信息
